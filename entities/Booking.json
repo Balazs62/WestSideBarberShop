@@ -1,0 +1,105 @@
+{
+  "name": "Booking",
+  "type": "object",
+  "properties": {
+    "service": {
+      "type": "string",
+      "description": "Selected service name"
+    },
+    "barber": {
+      "type": "string",
+      "description": "Selected barber name"
+    },
+    "date": {
+      "type": "string",
+      "format": "date",
+      "description": "Booking date"
+    },
+    "time": {
+      "type": "string",
+      "description": "Booking time slot"
+    },
+    "client_name": {
+      "type": "string",
+      "description": "Client full name"
+    },
+    "phone": {
+      "type": "string",
+      "description": "Client phone number"
+    },
+    "email": {
+      "type": "string",
+      "description": "Client email address"
+    },
+    "notes": {
+      "type": "string",
+      "description": "Optional notes from client"
+    },
+    "status": {
+      "type": "string",
+      "enum": [
+        "pending",
+        "confirmed",
+        "cancelled"
+      ],
+      "default": "pending",
+      "description": "Booking status"
+    }
+  },
+  "required": [
+    "service",
+    "barber",
+    "date",
+    "time",
+    "client_name",
+    "phone"
+  ],
+  "rls": {
+    "create": {},
+    "read": {
+      "$or": [
+        {
+          "created_by_id": "{{user.id}}"
+        },
+        {
+          "data.email": "{{user.email}}"
+        },
+        {
+          "user_condition": {
+            "role": "admin"
+          }
+        }
+      ]
+    },
+    "update": {
+      "$or": [
+        {
+          "created_by_id": "{{user.id}}"
+        },
+        {
+          "data.email": "{{user.email}}"
+        },
+        {
+          "user_condition": {
+            "role": "admin"
+          }
+        }
+      ]
+    },
+    "delete": {
+      "$or": [
+        {
+          "created_by_id": "{{user.id}}"
+        },
+        {
+          "data.email": "{{user.email}}"
+        },
+        {
+          "user_condition": {
+            "role": "admin"
+          }
+        }
+      ]
+    }
+  }
+}
